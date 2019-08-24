@@ -20,7 +20,7 @@ class TasksController < ApplicationController
             redirect_to @task
         else
             flash.now[:danger] = "Taskが追加されませんでした"
-            render:new
+            render :new
         end
     end
     
@@ -33,10 +33,12 @@ class TasksController < ApplicationController
         
         if @task.update(task_params)
             flash[:success] = "Taskは正常に更新されました"
-            
+            # TasksControllerのshowアクションにとぶ
+            # redirect_to @task
+            redirect_to tasks_path
         else
             flash.now[:danger] = "Taskは更新されませんでした"
-            render:edit
+            render :edit
         end
         
     end
@@ -49,7 +51,11 @@ class TasksController < ApplicationController
         redirect_to tasks_url
     end
     
+    private
+    # 今はよくわからないけど、今後きちんと理解しておく
+    # TasksController内部から呼び出しているメソッドは、Privateメソッドであるべき。
+    # ということまではわかった。
     def task_params
         params.require(:task).permit(:content)
-    end    
+    end
 end
